@@ -143,7 +143,7 @@ with shared.gradio_root:
                     rembg_output = grh.Image(label='rembg Output', interactive=False, height=380)
                 gr.Markdown("Powered by [🪄 rembg 2.0.53](https://github.com/danielgatis/rembg/releases/tag/v2.0.53)")
             rembg_button.click(rembg_run, inputs=rembg_input, outputs=rembg_output, show_progress="full") 
-            with gr.Tab(""):
+            
             
             with gr.Row(elem_classes='type_row'):
                 with gr.Column(scale=17):
