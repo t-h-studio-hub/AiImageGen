@@ -27,7 +27,7 @@ function updateOnBackgroundChange() {
     if (modalImage && modalImage.offsetParent) {
         let currentButton = selected_gallery_button();
 
-        if (currentButton ? .children ? .length > 0 && modalImage.src != currentButton.children[0].src) {
+        if (currentButton?.children?.length > 0 && modalImage.src != currentButton.children[0].src) {
             modalImage.src = currentButton.children[0].src;
             if (modalImage.style.display === 'none') {
                 const modal = gradioApp().getElementById("lightboxModal");
@@ -49,7 +49,7 @@ function all_gallery_buttons() {
 }
 
 function selected_gallery_button() {
-    return all_gallery_buttons().find(elem => elem.classList.contains('selected')) ? ? null;
+    return all_gallery_buttons().find(elem => elem.classList.contains('selected')) ?? null;
 }
 
 function selected_gallery_index() {
@@ -105,18 +105,18 @@ function modalPrevImage(event) {
 
 function modalKeyHandler(event) {
     switch (event.key) {
-        case "s":
-            saveImage();
-            break;
-        case "ArrowLeft":
-            modalPrevImage(event);
-            break;
-        case "ArrowRight":
-            modalNextImage(event);
-            break;
-        case "Escape":
-            closeModal();
-            break;
+    case "s":
+        saveImage();
+        break;
+    case "ArrowLeft":
+        modalPrevImage(event);
+        break;
+    case "ArrowRight":
+        modalNextImage(event);
+        break;
+    case "Escape":
+        closeModal();
+        break;
     }
 }
 

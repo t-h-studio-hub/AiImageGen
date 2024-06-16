@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function() {
             executeCallbacks(uiTabChangeCallbacks);
         }
     });
-    mutationObserver.observe(gradioApp(), { childList: true, subtree: true });
+    mutationObserver.observe(gradioApp(), {childList: true, subtree: true});
     initStylePreviewOverlay();
 });
 
@@ -129,7 +129,7 @@ document.addEventListener('keydown', function(e) {
     const isModifierKey = (e.metaKey || e.ctrlKey || e.altKey);
     const isEnterKey = (e.key == "Enter" || e.keyCode == 13);
 
-    if (isModifierKey && isEnterKey) {
+    if(isModifierKey && isEnterKey) {
         const generateButton = gradioApp().querySelector('button:not(.hidden)[id=generate_button]');
         if (generateButton) {
             generateButton.click();
@@ -138,7 +138,7 @@ document.addEventListener('keydown', function(e) {
         }
 
         const stopButton = gradioApp().querySelector('button:not(.hidden)[id=stop_button]')
-        if (stopButton) {
+        if(stopButton) {
             stopButton.click();
             e.preventDefault();
             return;
@@ -165,7 +165,6 @@ function initStylePreviewOverlay() {
           "fooocus_v2",
           name.toLowerCase().replaceAll(" ", "_")
         ).replaceAll("\\", "\\\\")}")`;
-
         function onMouseLeave() {
             overlayVisible = false;
             overlay.style.opacity = "0";
@@ -174,7 +173,7 @@ function initStylePreviewOverlay() {
         }
     });
     document.addEventListener('mousemove', function(e) {
-        if (!overlayVisible) return;
+        if(!overlayVisible) return;
         overlay.style.left = `${e.clientX}px`;
         overlay.style.top = `${e.clientY}px`;
         overlay.className = e.clientY > window.innerHeight / 2 ? "lower-half" : "upper-half";
@@ -205,7 +204,7 @@ function uiElementInSight(el) {
 }
 
 function playNotification() {
-    gradioApp().querySelector('#audio_notification audio') ? .play();
+    gradioApp().querySelector('#audio_notification audio')?.play();
 }
 
 function set_theme(theme) {

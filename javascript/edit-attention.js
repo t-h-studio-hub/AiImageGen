@@ -1,6 +1,6 @@
 function updateInput(target) {
-    let e = new Event("input", { bubbles: true });
-    Object.defineProperty(e, "target", { value: target });
+    let e = new Event("input", {bubbles: true});
+    Object.defineProperty(e, "target", {value: target});
     target.dispatchEvent(e);
 }
 
