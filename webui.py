@@ -356,26 +356,28 @@ with shared.gradio_root:
 
         with gr.Column(scale=1, visible=modules.config.default_advanced_checkbox) as advanced_column:
             with gr.Tab(label='Settings'):
-                performance_selection = gr.Radio(label='Performance',
-                                                 choices=modules.flags.performance_selections,
-                                                 value=modules.config.default_performance,
-                                                 elem_classes='performance_selections')
-                if not args_manager.args.disable_preset_selection:
-                    preset_selection = gr.Dropdown(label='Preset',
-                                                choices=modules.config.available_presets,
-                                                value=args_manager.args.preset if args_manager.args.preset else "initial",
-                                                interactive=True)
-                
+                with gr.Row():
+                    performance_selection = gr.Radio(label='Performance',
+                                                    choices=modules.flags.performance_selections,
+                                                    value=modules.config.default_performance,
+                                                    elem_classes='performance_selections')
+                    if not args_manager.args.disable_preset_selection:
+                        preset_selection = gr.Dropdown(label='Preset',
+                                                    choices=modules.config.available_presets,
+                                                    value=args_manager.args.preset if args_manager.args.preset else "initial",
+                                                    interactive=True)
+                    
                 aspect_ratios_selection = gr.Radio(label='Aspect Ratios', choices=modules.config.available_aspect_ratios,
                                                    value=modules.config.default_aspect_ratio, info='width × height',
                                                    elem_classes='aspect_ratios')
-                
-                sampling_apply = gr.Checkbox(label="Sampling", value=False)
-                with gr.Row(visible=False) as sampling:
-                    sampler_name = gr.Dropdown(label='Sampler', choices=flags.sampler_list,
-                                                    value=modules.config.default_sampler)
-                    scheduler_name = gr.Dropdown(label='Scheduler', choices=flags.scheduler_list,
-                                                    value=modules.config.default_scheduler)
+               
+                with gr.Row():
+                    sampling_apply = gr.Checkbox(label="Sampling", value=False)
+                    with gr.Row(visible=False) as sampling:
+                        sampler_name = gr.Dropdown(label='Sampler', choices=flags.sampler_list,
+                                                        value=modules.config.default_sampler)
+                        scheduler_name = gr.Dropdown(label='Scheduler', choices=flags.scheduler_list,
+                                                        value=modules.config.default_scheduler)
                 sampling_apply.change(
                     fn=lambda x: gr.update(visible=x),
                     inputs=sampling_apply,
