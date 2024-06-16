@@ -16,20 +16,19 @@ tools_dict = {}
 for name, values in tools_json.items():
     tools_dict[name] = values
 
-
 demos_names = []
 tools_names = []
+
 def load_demos_names():
-    for _ in demos_dict.keys():
-        demos_names.append(_)
+    demos_names.extend(demos_dict.keys())
     return demos_names
+
 def load_tools_names():
-    for _ in tools_dict.keys():
-        tools_names.append(_)
+    tools_names.extend(tools_dict.keys())
     return tools_names
 
 def load_demos_url(name):
-    return demos_names[name][0]
-def load_tools_url(name):
-    return tools_names[name][0]
+    return demos_dict[name][0]
 
+def load_tools_url(name):
+    return tools_dict[name][0]
