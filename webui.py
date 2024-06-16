@@ -126,7 +126,7 @@ with shared.gradio_root:
                 gallery = gr.Gallery(label='Gallery', show_label=False, object_fit='contain', visible=True, height=768,
                                      elem_classes=['resizable_area', 'main_view', 'final_gallery', 'image_gallery'],
                                      elem_id='final_gallery',
-                                     value=["assets/favicon.png"]
+                                     value=["assets/favicon.png"],
                                      preview=True)
             with gr.Tab("Photopea"):
                 with gr.Row():
