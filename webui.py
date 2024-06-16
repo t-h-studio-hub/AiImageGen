@@ -365,9 +365,16 @@ with shared.gradio_root:
                                                 value=args_manager.args.preset if args_manager.args.preset else "initial",
                                                 interactive=True)
                 
-                aspect_ratios_selection = gr.Radio(label='Aspect Ratios', choices=modules.config.available_aspect_ratios,
-                                                   value=modules.config.default_aspect_ratio, info='width × height',
-                                                   elem_classes='aspect_ratios')
+                with gr.Accordion(label='Aspect Ratios', open=False, elem_id='aspect_ratios_accordion') as aspect_ratios_accordion:
+                    aspect_ratios_selection = gr.Radio(label='Aspect Ratios', show_label=False,
+                                                       choices=modules.config.available_aspect_ratios_labels,
+                                                       value=modules.config.default_aspect_ratio,
+                                                       info='width × height',
+                                                       elem_classes='aspect_ratios')
+
+                    aspect_ratios_selection.change(lambda x: None, inputs=aspect_ratios_selection, queue=False, show_progress=False, _js='(x)=>{refresh_aspect_ratios_label(x);}')
+                    shared.gradio_root.load(lambda x: None, inputs=aspect_ratios_selection, queue=False, show_progress=False, _js='(x)=>{refresh_aspect_ratios_label(x);}')
+
                 image_number = gr.Slider(label='Image Number', minimum=1, maximum=modules.config.default_max_image_number, step=1, value=modules.config.default_image_number)
 
                 
@@ -482,6 +489,24 @@ with shared.gradio_root:
                 output_format = gr.Radio(label='Output Format',
                                             choices=modules.flags.output_formats,
                                             value=modules.config.default_output_format)
+
+                play_notification = gr.Checkbox(label='Play notification after rendering', value=False)
+                notification_file = 'notification.mp3'
+                if os.path.exists(notification_file):
+                    notification = gr.State(value=notification_file)
+                    notification_input = gr.Audio(label='Notification', interactive=True, elem_id='audio_notification', visible=False, show_edit_button=False)
+
+                    def play_notification_checked(r, notification):
+                        return gr.update(visible=r, value=notification if r else None)
+
+                    def notification_input_changed(notification_input, notification):
+                        if notification_input:
+                            notification = notification_input
+                        return notification
+
+                    play_notification.change(fn=play_notification_checked, inputs=[play_notification, notification], outputs=[notification_input], queue=False)
+                    notification_input.change(fn=notification_input_changed, inputs=[notification_input, notification], outputs=[notification], queue=False)
+
 
                 dev_mode = gr.Checkbox(label='Developer Debug Mode', value=False, container=False)
 
@@ -650,24 +675,7 @@ with shared.gradio_root:
                 model_refresh.click(model_refresh_clicked, [],  model_refresh_output + lora_ctrls,
                                     queue=False, show_progress=False)
 
-            with gr.Tab(label='Audio'):
-                play_notification = gr.Checkbox(label='Play notification after rendering', value=False)
-                notification_file = 'notification.mp3'
-                if os.path.exists(notification_file):
-                    notification = gr.State(value=notification_file)
-                    notification_input = gr.Audio(label='Notification', interactive=True, elem_id='audio_notification', visible=False, show_edit_button=False)
-
-                    def play_notification_checked(r, notification):
-                        return gr.update(visible=r, value=notification if r else None)
-
-                    def notification_input_changed(notification_input, notification):
-                        if notification_input:
-                            notification = notification_input
-                        return notification
-
-                    play_notification.change(fn=play_notification_checked, inputs=[play_notification, notification], outputs=[notification_input], queue=False)
-                    notification_input.change(fn=notification_input_changed, inputs=[notification_input, notification], outputs=[notification], queue=False)
-
+                
         state_is_generating = gr.State(False)
 
         load_data_outputs = [advanced_checkbox, image_number, prompt, negative_prompt, style_selections,
