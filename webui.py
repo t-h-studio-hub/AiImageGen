@@ -372,7 +372,7 @@ with shared.gradio_root:
                                                    value=modules.config.default_aspect_ratio, info='width × height',
                                                    elem_classes='aspect_ratios')
                
-                with gr.Row():
+                with gr.Column():
                     sampling_apply = gr.Checkbox(label="Sampling", value=False)
                     with gr.Row(visible=False) as sampling:
                         sampler_name = gr.Dropdown(label='Sampler', choices=flags.sampler_list,
