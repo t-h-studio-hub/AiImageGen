@@ -173,3 +173,12 @@ class Performance(Enum):
 
     def lora_filename(self) -> str | None:
         return PerformanceLoRA[self.name].value if self.name in PerformanceLoRA.__members__ else None
+    
+    
+performance_selections = [
+    ('Quality <span style="color: grey;"> \U00002223 60 steps</span>', Performance.QUALITY.value),
+    ('Speed <span style="color: grey;"> \U00002223 30 steps</span>', Performance.SPEED.value),
+    ('Extreme Speed <span style="color: grey;"> \U00002223 8 steps, LCM</span>', Performance.EXTREME_SPEED.value),
+    ('Lightning <span style="color: grey;"> \U00002223 4 steps</span>', Performance.LIGHTNING.value),
+    ('Hyper <span style="color: grey;"> \U00002223 4 steps</span>', Performance.HYPER_SD.value)
+]
