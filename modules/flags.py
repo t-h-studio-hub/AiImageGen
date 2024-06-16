@@ -102,6 +102,10 @@ metadata_scheme = [
     (f'{MetadataScheme.A1111.value} (plain text)', MetadataScheme.A1111.value),
 ]
 
+lora_count = 5
+lora_count_with_lcm = lora_count + 1
+
+
 controlnet_image_count = 4
 preparation_step_count = 13
 
