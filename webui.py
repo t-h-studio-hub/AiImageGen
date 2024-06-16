@@ -14,6 +14,7 @@ import modules.gradio_hijack as grh
 import modules.style_sorter as style_sorter
 import modules.meta_parser
 from modules.rembg import rembg_run
+from modules.load_online import load_demos_names, load_tools_names, load_demos_url, load_tools_url
 import args_manager
 import copy
 import launch
@@ -143,9 +144,18 @@ with shared.gradio_root:
                     rembg_output = grh.Image(label='rembg Output', interactive=False, height=380)
                 gr.Markdown("Powered by [🪄 rembg 2.0.53](https://github.com/danielgatis/rembg/releases/tag/v2.0.53)")
             rembg_button.click(rembg_run, inputs=rembg_input, outputs=rembg_output, show_progress="full") 
-            with gr.Tab("StableVITON"):
-                gr.load(name="multimodalart/stable-video-diffusion", src="spaces")
-            
+            with gr.Tab("Online"):
+                with gr.Tab("Demos"):
+                    for name in load_demos_names():
+                        url = load_demos_url(name)
+                        with gr.Tab(name):
+                            gr.HTML(f"<iframe src='{url}' width='100%' height='1080px' style='border-radius: 8px;'></iframe>")
+                with gr.Tab("Tools"):
+                    for name in load_tools_names():
+                        url = load_tools_url(name)
+                        with gr.Tab(name):
+                            gr.HTML(f"<iframe src='{url}' width='100%' height='1080px' style='border-radius: 8px;'></iframe>")
+
             with gr.Row(elem_classes='type_row'):
                 with gr.Column(scale=17):
                     prompt = gr.Textbox(show_label=False, placeholder="Type prompt here or paste parameters.", elem_id='positive_prompt',
