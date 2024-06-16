@@ -372,17 +372,23 @@ with shared.gradio_root:
                                                    value=modules.config.default_aspect_ratio, info='width × height',
                                                    elem_classes='aspect_ratios')
                
-                with gr.Column():
+                with gr.Row():
                     sampling_apply = gr.Checkbox(label="Sampling", value=False)
-                    with gr.Row(visible=False) as sampling:
-                        sampler_name = gr.Dropdown(label='Sampler', choices=flags.sampler_list,
-                                                        value=modules.config.default_sampler)
-                        scheduler_name = gr.Dropdown(label='Scheduler', choices=flags.scheduler_list,
-                                                        value=modules.config.default_scheduler)
+                    
+                    sampler_name = gr.Dropdown(label='Sampler', choices=flags.sampler_list,
+                                                  value=modules.config.default_sampler)
+                    scheduler_name = gr.Dropdown(label='Scheduler', choices=flags.scheduler_list,
+                                                  value=modules.config.default_scheduler)
                 sampling_apply.change(
                     fn=lambda x: gr.update(visible=x),
                     inputs=sampling_apply,
-                    outputs=sampling,
+                    outputs=sampler_name,
+                    queue=False,
+                    api_name=False,
+                ).then(
+                    fn=lambda x: gr.update(visible=x),
+                    inputs=sampling_apply,
+                    outputs=scheduler_name,
                     queue=False,
                     api_name=False,
                 )
