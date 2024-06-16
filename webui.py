@@ -366,14 +366,24 @@ with shared.gradio_root:
                                                 value=args_manager.args.preset if args_manager.args.preset else "initial",
                                                 interactive=True)
                 
-                aspect_ratios_selection = gr.Dropdown(label='Aspect Ratios', choices=modules.config.available_aspect_ratios,
+                aspect_ratios_selection = gr.Radio(label='Aspect Ratios', choices=modules.config.available_aspect_ratios,
                                                    value=modules.config.default_aspect_ratio, info='width × height',
                                                    elem_classes='aspect_ratios')
                 
-                sampler_name = gr.Dropdown(label='Sampler', choices=flags.sampler_list,
-                                                   value=modules.config.default_sampler)
-                scheduler_name = gr.Dropdown(label='Scheduler', choices=flags.scheduler_list,
-                                                   value=modules.config.default_scheduler)
+                sampling_apply = gr.Checkbox(label="Sampling", value=False)
+                with gr.Row(visible=False) as sampling:
+                    sampler_name = gr.Dropdown(label='Sampler', choices=flags.sampler_list,
+                                                    value=modules.config.default_sampler)
+                    scheduler_name = gr.Dropdown(label='Scheduler', choices=flags.scheduler_list,
+                                                    value=modules.config.default_scheduler)
+                sampling_apply.change(
+                    fn=lambda x: gr.update(visible=x),
+                    inputs=sampling_apply,
+                    outputs=sampling,
+                    queue=False,
+                    api_name=False,
+                )
+                            
                 
                 image_number = gr.Slider(label='Image Number', minimum=1, maximum=modules.config.default_max_image_number, step=1, value=modules.config.default_image_number)
 
