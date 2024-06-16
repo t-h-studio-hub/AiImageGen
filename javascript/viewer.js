@@ -4,12 +4,13 @@ function refresh_grid() {
     let gridContainer = document.querySelector('#final_gallery .grid-container');
     let final_gallery = document.getElementById('final_gallery');
 
-    if (gridContainer) if (final_gallery) {
-        let rect = final_gallery.getBoundingClientRect();
-        let cols = Math.ceil((rect.width - 16.0) / rect.height);
-        if (cols < 2) cols = 2;
-        gridContainer.style.setProperty('--grid-cols', cols);
-    }
+    if (gridContainer)
+        if (final_gallery) {
+            let rect = final_gallery.getBoundingClientRect();
+            let cols = Math.ceil((rect.width - 16.0) / rect.height);
+            if (cols < 2) cols = 2;
+            gridContainer.style.setProperty('--grid-cols', cols);
+        }
 }
 
 function refresh_grid_delayed() {
@@ -35,7 +36,7 @@ function resized() {
 }
 
 function viewer_to_top(delay = 100) {
-    setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), delay);
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), delay);
 }
 
 function viewer_to_bottom(delay = 100) {
@@ -46,33 +47,33 @@ function viewer_to_bottom(delay = 100) {
         yPos = element.getBoundingClientRect().top + window.scrollY;
     }
 
-    setTimeout(() => window.scrollTo({top: yPos - 8, behavior: 'smooth'}), delay);
+    setTimeout(() => window.scrollTo({ top: yPos - 8, behavior: 'smooth' }), delay);
 }
 
 window.addEventListener('resize', (e) => {
     resized();
 });
 
-onUiLoaded(async () => {
+onUiLoaded(async() => {
     resized();
 });
 
 function on_style_selection_blur() {
     let target = document.querySelector("#gradio_receiver_style_selections textarea");
     target.value = "on_style_selection_blur " + Math.random();
-    let e = new Event("input", {bubbles: true})
-    Object.defineProperty(e, "target", {value: target})
+    let e = new Event("input", { bubbles: true })
+    Object.defineProperty(e, "target", { value: target })
     target.dispatchEvent(e);
 }
 
-onUiLoaded(async () => {
-    let spans = document.querySelectorAll('.aspect_ratios span');
+onUiLoaded(async() => {
+    let spans = document.querySelectorAll('.aspect_ratios span, .performance_selections span');
 
-    spans.forEach(function (span) {
+    spans.forEach(function(span) {
         span.innerHTML = span.innerHTML.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
     });
 
-    document.querySelector('.style_selections').addEventListener('focusout', function (event) {
+    document.querySelector('.style_selections').addEventListener('focusout', function(event) {
         setTimeout(() => {
             if (!this.contains(document.activeElement)) {
                 on_style_selection_blur();
@@ -82,7 +83,7 @@ onUiLoaded(async () => {
 
     let inputs = document.querySelectorAll('.lora_weight input[type="range"]');
 
-    inputs.forEach(function (input) {
+    inputs.forEach(function(input) {
         input.style.marginTop = '12px';
     });
 });

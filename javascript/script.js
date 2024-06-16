@@ -118,45 +118,8 @@ document.addEventListener("DOMContentLoaded", function() {
             executeCallbacks(uiTabChangeCallbacks);
         }
     });
-    mutationObserver.observe(gradioApp(), {childList: true, subtree: true});
+    mutationObserver.observe(gradioApp(), { childList: true, subtree: true });
     initStylePreviewOverlay();
-});
-
-var onAppend = function(elem, f) {
-    var observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(m) {
-            if (m.addedNodes.length) {
-                f(m.addedNodes);
-            }
-        });
-    });
-    observer.observe(elem, {childList: true});
-}
-
-function addObserverIfDesiredNodeAvailable(querySelector, callback) {
-    var elem = document.querySelector(querySelector);
-    if (!elem) {
-        window.setTimeout(() => addObserverIfDesiredNodeAvailable(querySelector, callback), 1000);
-        return;
-    }
-
-    onAppend(elem, callback);
-}
-
-/**
- * Show reset button on toast "Connection errored out."
- */
-addObserverIfDesiredNodeAvailable(".toast-wrap", function(added) {
-    added.forEach(function(element) {
-         if (element.innerText.includes("Connection errored out.")) {
-             window.setTimeout(function() {
-                document.getElementById("reset_button").classList.remove("hidden");
-                document.getElementById("generate_button").classList.add("hidden");
-                document.getElementById("skip_button").classList.add("hidden");
-                document.getElementById("stop_button").classList.add("hidden");
-            });
-         }
-    });
 });
 
 /**
@@ -166,7 +129,7 @@ document.addEventListener('keydown', function(e) {
     const isModifierKey = (e.metaKey || e.ctrlKey || e.altKey);
     const isEnterKey = (e.key == "Enter" || e.keyCode == 13);
 
-    if(isModifierKey && isEnterKey) {
+    if (isModifierKey && isEnterKey) {
         const generateButton = gradioApp().querySelector('button:not(.hidden)[id=generate_button]');
         if (generateButton) {
             generateButton.click();
@@ -175,7 +138,7 @@ document.addEventListener('keydown', function(e) {
         }
 
         const stopButton = gradioApp().querySelector('button:not(.hidden)[id=stop_button]')
-        if(stopButton) {
+        if (stopButton) {
             stopButton.click();
             e.preventDefault();
             return;
@@ -187,12 +150,9 @@ function initStylePreviewOverlay() {
     let overlayVisible = false;
     const samplesPath = document.querySelector("meta[name='samples-path']").getAttribute("content")
     const overlay = document.createElement('div');
-    const tooltip = document.createElement('div');
-    tooltip.className = 'preview-tooltip';
-    overlay.appendChild(tooltip);
     overlay.id = 'stylePreviewOverlay';
     document.body.appendChild(overlay);
-    document.addEventListener('mouseover', function (e) {
+    document.addEventListener('mouseover', function(e) {
         const label = e.target.closest('.style_selections label');
         if (!label) return;
         label.removeEventListener("mouseout", onMouseLeave);
@@ -202,11 +162,9 @@ function initStylePreviewOverlay() {
         const originalText = label.querySelector("span").getAttribute("data-original-text");
         const name = originalText || label.querySelector("span").textContent;
         overlay.style.backgroundImage = `url("${samplesPath.replace(
-            "fooocus_v2",
-            name.toLowerCase().replaceAll(" ", "_")
+          "fooocus_v2",
+          name.toLowerCase().replaceAll(" ", "_")
         ).replaceAll("\\", "\\\\")}")`;
-
-        tooltip.textContent = name;
 
         function onMouseLeave() {
             overlayVisible = false;
@@ -215,7 +173,7 @@ function initStylePreviewOverlay() {
             label.removeEventListener("mouseout", onMouseLeave);
         }
     });
-    document.addEventListener('mousemove', function (e) {
+    document.addEventListener('mousemove', function(e) {
         if (!overlayVisible) return;
         overlay.style.left = `${e.clientX}px`;
         overlay.style.top = `${e.clientY}px`;
@@ -247,7 +205,7 @@ function uiElementInSight(el) {
 }
 
 function playNotification() {
-    gradioApp().querySelector('#audio_notification audio')?.play();
+    gradioApp().querySelector('#audio_notification audio') ? .play();
 }
 
 function set_theme(theme) {
@@ -255,9 +213,4 @@ function set_theme(theme) {
     if (!gradioURL.includes('?__theme=')) {
         window.location.replace(gradioURL + '?__theme=' + theme);
     }
-}
-
-function htmlDecode(input) {
-  var doc = new DOMParser().parseFromString(input, "text/html");
-  return doc.documentElement.textContent;
 }

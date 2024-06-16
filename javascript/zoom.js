@@ -9,14 +9,14 @@ onUiLoaded(async() => {
     // Function for defining the "Ctrl", "Shift" and "Alt" keys
     function isModifierKey(event, key) {
         switch (key) {
-        case "Ctrl":
-            return event.ctrlKey;
-        case "Shift":
-            return event.shiftKey;
-        case "Alt":
-            return event.altKey;
-        default:
-            return false;
+            case "Ctrl":
+                return event.ctrlKey;
+            case "Shift":
+                return event.shiftKey;
+            case "Alt":
+                return event.altKey;
+            default:
+                return false;
         }
     }
 
@@ -88,8 +88,7 @@ onUiLoaded(async() => {
             tooltipContent.className = "canvas-tooltip-content";
 
             // Define an array with hotkey information and their actions
-            const hotkeysInfo = [
-                {
+            const hotkeysInfo = [{
                     configKey: "canvas_hotkey_zoom",
                     action: "Zoom canvas",
                     keySuffix: " + wheel"
@@ -99,46 +98,46 @@ onUiLoaded(async() => {
                     action: "Adjust brush size",
                     keySuffix: " + wheel"
                 },
-                {configKey: "canvas_zoom_hotkey_undo", action: "Undo last action", keyPrefix: `${hotkeysConfig.canvas_zoom_undo_extra_key} + ` },
-                {configKey: "canvas_hotkey_reset", action: "Reset zoom"},
+                { configKey: "canvas_zoom_hotkey_undo", action: "Undo last action", keyPrefix: `${hotkeysConfig.canvas_zoom_undo_extra_key} + ` },
+                { configKey: "canvas_hotkey_reset", action: "Reset zoom" },
                 {
                     configKey: "canvas_hotkey_fullscreen",
                     action: "Fullscreen mode"
                 },
-                {configKey: "canvas_hotkey_move", action: "Move canvas"}
+                { configKey: "canvas_hotkey_move", action: "Move canvas" }
             ];
 
             // Create hotkeys array based on the config values
             const hotkeys = hotkeysInfo.map((info) => {
                 const configValue = hotkeysConfig[info.configKey];
-        
-                let key = configValue.slice(-1);
-        
-                if (info.keySuffix) {
-                  key = `${configValue}${info.keySuffix}`;
-                }
-        
-                if (info.keyPrefix && info.keyPrefix !== "None + ") {
-                  key = `${info.keyPrefix}${configValue[3]}`;
-                }
-        
-                return {
-                  key,
-                  action: info.action,
-                };
-              });
-        
-              hotkeys
-                .forEach(hotkey => {
-                  const p = document.createElement("p");
-                  p.innerHTML = `<b>${hotkey.key}</b> - ${hotkey.action}`;
-                  tooltipContent.appendChild(p);
-                });
-        
-              tooltip.append(info, tooltipContent);
 
-              // Add a hint element to the target element
-              toolTipElemnt.appendChild(tooltip);
+                let key = configValue.slice(-1);
+
+                if (info.keySuffix) {
+                    key = `${configValue}${info.keySuffix}`;
+                }
+
+                if (info.keyPrefix && info.keyPrefix !== "None + ") {
+                    key = `${info.keyPrefix}${configValue[3]}`;
+                }
+
+                return {
+                    key,
+                    action: info.action,
+                };
+            });
+
+            hotkeys
+                .forEach(hotkey => {
+                    const p = document.createElement("p");
+                    p.innerHTML = `<b>${hotkey.key}</b> - ${hotkey.action}`;
+                    tooltipContent.appendChild(p);
+                });
+
+            tooltip.append(info, tooltipContent);
+
+            // Add a hint element to the target element
+            toolTipElemnt.appendChild(tooltip);
         }
 
         //Show tool tip if setting enable
@@ -253,7 +252,7 @@ onUiLoaded(async() => {
             targetElement.style.overflow = "visible";
 
             toggleOverlap("on");
- 
+
             return newZoomLevel;
         }
 
@@ -312,8 +311,8 @@ onUiLoaded(async() => {
             const scaleY = screenHeight / elementHeight;
             const scale = Math.min(scaleX, scaleY);
 
-            const offsetX =0;
-            const offsetY =0;
+            const offsetX = 0;
+            const offsetY = 0;
 
             // Apply scale and offsets to the element
             targetElement.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
@@ -331,17 +330,17 @@ onUiLoaded(async() => {
         function undoLastAction(e) {
             let isCtrlPressed = isModifierKey(e, hotkeysConfig.canvas_zoom_undo_extra_key)
             const isAuxButton = e.button >= 3;
-            
+
             if (isAuxButton) {
-              isCtrlPressed = true
+                isCtrlPressed = true
             } else {
-              if (!isModifierKey(e, hotkeysConfig.canvas_zoom_undo_extra_key)) return;
+                if (!isModifierKey(e, hotkeysConfig.canvas_zoom_undo_extra_key)) return;
             }
 
             // Move undoBtn query outside the if statement to avoid unnecessary queries
             const undoBtn = document.querySelector(`${activeElement} button[aria-label="Undo"]`);
-        
-            if ((isCtrlPressed) && undoBtn ) {
+
+            if ((isCtrlPressed) && undoBtn) {
                 e.preventDefault();
                 undoBtn.click();
             }
@@ -468,6 +467,7 @@ onUiLoaded(async() => {
         // We hide the image and show it to the user when it is ready.
 
         targetElement.isExpanded = false;
+
         function autoExpand() {
             const canvas = document.querySelector(`${elemId} canvas[key="interface"]`);
             if (canvas) {
@@ -490,21 +490,21 @@ onUiLoaded(async() => {
         // Creating an observer with a callback function to handle DOM changes
         const observer = new MutationObserver((mutationsList, observer) => {
             for (let mutation of mutationsList) {
-              // If the style attribute of the canvas has changed, by observation it happens only when the picture changes
-              if (mutation.type === 'attributes' && mutation.attributeName === 'style' &&
-                mutation.target.tagName.toLowerCase() === 'canvas') {
-                targetElement.isExpanded = false;
-                setTimeout(resetZoom, 10);
-              }
+                // If the style attribute of the canvas has changed, by observation it happens only when the picture changes
+                if (mutation.type === 'attributes' && mutation.attributeName === 'style' &&
+                    mutation.target.tagName.toLowerCase() === 'canvas') {
+                    targetElement.isExpanded = false;
+                    setTimeout(resetZoom, 10);
+                }
             }
-          });
-      
-          // Apply auto expand if enabled
-          if (hotkeysConfig.canvas_auto_expand) {
+        });
+
+        // Apply auto expand if enabled
+        if (hotkeysConfig.canvas_auto_expand) {
             targetElement.addEventListener("mousemove", autoExpand);
             // Set up an observer to track attribute changes
             observer.observe(targetElement, { attributes: true, childList: true, subtree: true });
-          }
+        }
 
         // Handle events only inside the targetElement
         let isKeyDownHandlerAttached = false;

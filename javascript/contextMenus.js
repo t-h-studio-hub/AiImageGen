@@ -144,11 +144,11 @@ let cancelGenerateForever = function() {
         }
         clearInterval(window.generateOnRepeatInterval);
         window.generateOnRepeatInterval = setInterval(function() {
-            if (!interruptbutton.offsetParent) {
-                genbutton.click();
-            }
-        },
-        500);
+                if (!interruptbutton.offsetParent) {
+                    genbutton.click();
+                }
+            },
+            500);
     };
 
     let generateOnRepeatForButtons = function() {
@@ -159,7 +159,7 @@ let cancelGenerateForever = function() {
 })();
 //End example Context Menu Items
 
-document.onreadystatechange = function () {
+document.onreadystatechange = function() {
     if (document.readyState == "complete") {
         addContextMenuEventListener();
     }

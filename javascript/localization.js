@@ -8,7 +8,8 @@ function hasLocalization() {
 }
 
 function textNodesUnder(el) {
-    var n, a = [], walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var n, a = [],
+        walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
     while ((n = walk.nextNode())) a.push(n);
     return a;
 }
@@ -46,7 +47,7 @@ function processTextNode(node) {
     if (tl !== undefined) {
         node.textContent = tl;
         if (text && node.parentElement) {
-          node.parentElement.setAttribute("data-original-text", text);
+            node.parentElement.setAttribute("data-original-text", text);
         }
     }
 }
@@ -78,15 +79,6 @@ function processNode(node) {
 
 function refresh_style_localization() {
     processNode(document.querySelector('.style_selections'));
-}
-
-function refresh_aspect_ratios_label(value) {
-    label = document.querySelector('#aspect_ratios_accordion div span');
-    translation = getTranslation("Aspect Ratios");
-    if (typeof translation == "undefined") {
-        translation = "Aspect Ratios";
-    }
-    label.textContent = translation + " " + htmlDecode(value);
 }
 
 function localizeWholePage() {
@@ -148,6 +140,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 });
             });
-        })).observe(gradioApp(), {childList: true});
+        })).observe(gradioApp(), { childList: true });
     }
 });
