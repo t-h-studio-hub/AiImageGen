@@ -374,25 +374,19 @@ with shared.gradio_root:
                
                 with gr.Row():
                     sampling_apply = gr.Checkbox(label="Sampling", value=False)
-                    
-                    sampler_name = gr.Dropdown(label='Sampler', choices=flags.sampler_list,
-                                                  value=modules.config.default_sampler)
-                    scheduler_name = gr.Dropdown(label='Scheduler', choices=flags.scheduler_list,
-                                                  value=modules.config.default_scheduler)
+                    with gr.Row(visible=False) as sampling:
+                        sampler_name = gr.Dropdown(label='Sampler', choices=flags.sampler_list,
+                                                    value=modules.config.default_sampler)
+                        scheduler_name = gr.Dropdown(label='Scheduler', choices=flags.scheduler_list,
+                                                    value=modules.config.default_scheduler)
                 sampling_apply.change(
                     fn=lambda x: gr.update(visible=x),
                     inputs=sampling_apply,
-                    outputs=sampler_name,
-                    queue=False,
-                    api_name=False,
-                ).then(
-                    fn=lambda x: gr.update(visible=x),
-                    inputs=sampling_apply,
-                    outputs=scheduler_name,
+                    outputs=sampling,
                     queue=False,
                     api_name=False,
                 )
-                            
+                                            
                 
                 image_number = gr.Slider(label='Image Number', minimum=1, maximum=modules.config.default_max_image_number, step=1, value=modules.config.default_image_number)
 
