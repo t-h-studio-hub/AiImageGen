@@ -74,6 +74,10 @@ default_parameters = {
 
 output_formats = ['png', 'jpeg', 'webp']
 
+inpaint_mask_models = [
+    'u2net', 'u2netp', 'u2net_human_seg', 'u2net_cloth_seg', 'silueta', 'isnet-general-use', 'isnet-anime', 'sam'
+]
+
 inpaint_engine_versions = ['None', 'v1', 'v2.5', 'v2.6']
 inpaint_option_default = 'Inpaint or Outpaint (default)'
 inpaint_option_detail = 'Improve Detail (face, hand, eyes, etc.)'
